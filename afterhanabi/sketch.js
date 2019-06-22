@@ -2,7 +2,13 @@ function setup() {
   title = createElement('h2', "<a href='/PoeticCodeForNature'> HOME : </a> after hanabi");
   title.position(20, 0);
 
-  canvas = createCanvas(400, 400);
+  canvas = createCanvas(800, 800);
+  function centerCanvas() {
+    x = (windowWidth - width) / 2;
+    y = (windowHeight - height) / 2;
+    canvas.position(x, y);
+  }
+  
   canvas.position(20, 60);
   canvas.class("artwork");
 
