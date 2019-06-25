@@ -1,42 +1,28 @@
-function centerCanvas() {
-  x = (windowWidth - width) / 2;
-  y = (windowHeight - height) / 2;
-  canvas.position(x, y);
-}
+let cX, cY;
 
 function setup() {
-  title = createElement('h2', "<a href='/PoeticCodeForNature'> HOME : </a> after hanabi");
+  title = createElement('h2', "<a href='/PoeticCodeForNature'> </a> after hanabi");
   title.position(20, 0);
 
-  canvas = createCanvas(1000, 800);
-  centerCanvas();
+  canvas = createCanvas(windowWidth * 0.8, windowHeight * 0.8);
+  cX = (windowWidth - width) / 2;
+  cY = (windowHeight - height) / 2;
+  canvas.position(cX, cY);
 
   canvas.position(20, 60);
   canvas.class("artwork");
 
-  description = "\
-  작품에 대한 설명이 들어갑니다. <br/> \
-  HTML이 직접 들어가서 줄넘김을 할 수 있습니다. \
-  ";
-  text = createDiv(description);
-  text.position(20, 400);
-  text.style("font-family", "monospace");
-  text.style("font-size", "12pt");
-
   gravity = createVector(0, 0.2);
-  stroke(255);
+  stroke(212);
   strokeWeight(4);
   background(0);
 }
 
 function draw() {
-  fill(255);
-  ellipse(width/2, height/2, 50);
 
-  background(0, 0, 0, 25);
-  if (random(1) < 0.03) {
-    fireworks.push(new Firework());
-  }
+//if (random(1) < 0.03) {
+//    fireworks.push(new Firework());
+//}
 
   for (var i = fireworks.length-1; i >= 0; i--) {
     fireworks[i].update();
@@ -46,15 +32,18 @@ function draw() {
   }
 }
 
+function mousePressed(){
+  fireworks.push(new Firework(mouseX));
+}
+
 var fireworks = [];
 var gravity;
 
-function Firework() {
-  this.hu = random(255);
-  this.firework = new Particle(random(width), height, this.hu, true);
+function Firework(x) {
+  this.hu = 212;
+  this.firework = new Particle(x, height, this.hu, true);
   this.exploded = false;
   this.particles = [];
-
 
   this.done = function() {
     if (this.exploded && this.particles.length === 0){
@@ -62,7 +51,7 @@ function Firework() {
   }else {
     return false;
   }
-  }
+}
   this.update = function() { //firstUpdate
     if (!this.exploded) {
       this.firework.applyForce(gravity);
@@ -100,12 +89,12 @@ function Firework() {
 function Particle(x, y, hu, firework) {
     this.pos = createVector(x, y);
     this.firework = firework;
-    this.lifespan = 255;
+    this.lifespan = 212;
     this.hu = hu;
 
   if (this.firework){
    this.vel = createVector(0, random(-12, -8));
- }else {
+ } else {
    this.vel = p5.Vector.random2D();
    this.vel.mult(random(2, 10));
  }
@@ -120,11 +109,13 @@ function Particle(x, y, hu, firework) {
     if (!this.firework) {
       this.vel.mult(0.9);
       this.lifespan -= 4;
+      hu -= 4;
     }
     this.vel.add(this.acc);
     this.pos.add(this.vel);
     this.acc.mult(0);
   }
+
   this.done = function(){
     if(this.lifespan < 0){
       return true;
@@ -136,12 +127,11 @@ function Particle(x, y, hu, firework) {
    colorMode(HSB);
     if (!this.firework) {
      strokeWeight(2);
-     stroke(hu, 255, 255, this.lifespan);
-   }else {
+     stroke(hu, 212, 212, this.lifespan);
+   } else {
      strokeWeight(4);
-     stroke(hu, 255, 255);
+     stroke(hu, 212, 212);
    }
     point(this.pos.x, this.pos.y);
-
   }
 }
